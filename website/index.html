@@ -633,7 +633,7 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 /* ── Model catalogue ─────────────────────────────────────────────────────── */
 const VARIANTS = {
   ML: {
-    path: '../Model/One-Handed_Keyboard_ML/',
+    path: 'Model/One-Handed_Keyboard_ML/',
     parts: [
       { name: 'Enclosure',         file: '外壳_左.STL' },
       { name: 'Base',              file: '底座_左.STL' },
@@ -644,7 +644,7 @@ const VARIANTS = {
     ]
   },
   MR: {
-    path: '../Model/One-Handed_Keyboard_MR/',
+    path: 'Model/One-Handed_Keyboard_MR/',
     parts: [
       { name: 'Enclosure',         file: '外壳_右.STL' },
       { name: 'Base',              file: '底座_右.STL' },
@@ -655,7 +655,7 @@ const VARIANTS = {
     ]
   },
   SL: {
-    path: '../Model/One-Handed_Keyboard_SL/',
+    path: 'Model/One-Handed_Keyboard_SL/',
     parts: [
       { name: 'Enclosure',         file: '外壳.STL'    },
       { name: 'Base',              file: '底座.STL'    },
@@ -815,22 +815,22 @@ loadPart('ML', 0);
 <!-- Gallery + Lightbox -->
 <script>
 const IMAGES = [
-  { src: '../Docs/Image/左手小键盘正面.jpg',                caption: 'Left Small — Front' },
-  { src: '../Docs/Image/左手小键盘右侧面.jpg',               caption: 'Left Small — Right Side' },
-  { src: '../Docs/Image/左手小键盘左侧面.jpg',               caption: 'Left Small — Left Side' },
-  { src: '../Docs/Image/左手大键盘正面.jpg',                 caption: 'Left Large — Front' },
-  { src: '../Docs/Image/左手大键盘右侧.jpg',                 caption: 'Left Large — Right Side' },
-  { src: '../Docs/Image/左手大键盘左侧.jpg',                 caption: 'Left Large — Left Side' },
-  { src: '../Docs/Image/右手大键盘正面.jpg',                 caption: 'Right Large — Front' },
-  { src: '../Docs/Image/右手大键盘右侧.jpg',                 caption: 'Right Large — Right Side' },
-  { src: '../Docs/Image/右手大键盘左侧.jpg',                 caption: 'Right Large — Left Side' },
-  { src: '../Docs/Image/左手大键盘爆炸图.jpg',               caption: 'Left Large — Exploded View' },
-  { src: '../Docs/Image/左手小键盘爆炸图.jpg',               caption: 'Left Small — Exploded View' },
-  { src: '../Docs/Image/轨迹球安装示意图.jpg',               caption: 'Trackball Installation' },
-  { src: '../Docs/Image/左手大键盘棉条安装示意图.jpg',        caption: 'Large — Foam Strip Install' },
-  { src: '../Docs/Image/左手大键盘底部螺丝安装示意图.jpg',    caption: 'Large — Bottom Screw Install' },
-  { src: '../Docs/Image/左手小键盘底部螺丝安装示意图.jpg',    caption: 'Small — Bottom Screw Install' },
-  { src: '../Docs/Image/小键盘键帽不同层区分.jpg',            caption: 'Small — Keycap Layer Guide' },
+  { src: 'Docs/Image/左手小键盘正面.jpg',                caption: 'Left Small — Front' },
+  { src: 'Docs/Image/左手小键盘右侧面.jpg',               caption: 'Left Small — Right Side' },
+  { src: 'Docs/Image/左手小键盘左侧面.jpg',               caption: 'Left Small — Left Side' },
+  { src: 'Docs/Image/左手大键盘正面.jpg',                 caption: 'Left Large — Front' },
+  { src: 'Docs/Image/左手大键盘右侧.jpg',                 caption: 'Left Large — Right Side' },
+  { src: 'Docs/Image/左手大键盘左侧.jpg',                 caption: 'Left Large — Left Side' },
+  { src: 'Docs/Image/右手大键盘正面.jpg',                 caption: 'Right Large — Front' },
+  { src: 'Docs/Image/右手大键盘右侧.jpg',                 caption: 'Right Large — Right Side' },
+  { src: 'Docs/Image/右手大键盘左侧.jpg',                 caption: 'Right Large — Left Side' },
+  { src: 'Docs/Image/左手大键盘爆炸图.jpg',               caption: 'Left Large — Exploded View' },
+  { src: 'Docs/Image/左手小键盘爆炸图.jpg',               caption: 'Left Small — Exploded View' },
+  { src: 'Docs/Image/轨迹球安装示意图.jpg',               caption: 'Trackball Installation' },
+  { src: 'Docs/Image/左手大键盘棉条安装示意图.jpg',        caption: 'Large — Foam Strip Install' },
+  { src: 'Docs/Image/左手大键盘底部螺丝安装示意图.jpg',    caption: 'Large — Bottom Screw Install' },
+  { src: 'Docs/Image/左手小键盘底部螺丝安装示意图.jpg',    caption: 'Small — Bottom Screw Install' },
+  { src: 'Docs/Image/小键盘键帽不同层区分.jpg',            caption: 'Small — Keycap Layer Guide' },
 ];
 
 const galleryGrid = document.getElementById('gallery-grid');
