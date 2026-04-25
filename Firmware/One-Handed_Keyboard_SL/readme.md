@@ -1,8 +1,8 @@
 # One-Handed_Keyboard_SL
 
-![左手小键盘正面](/Docs/Image/左手小键盘正面.jpg "")
+![Left Small Keyboard Front](/Docs/Image/左手小键盘正面.jpg "")
 
-![左手小键盘侧面](/Docs/Image/左手小键盘左侧面.jpg "")
+![Left Small Keyboard Side](/Docs/Image/左手小键盘左侧面.jpg "")
 
 ---
 
