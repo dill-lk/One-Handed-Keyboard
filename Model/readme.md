@@ -1,36 +1,33 @@
-## 热熔螺母与紧固件安装指南
+## Heat-Set Insert and Fastener Installation Guide
 
-#### 大键盘
+#### Large Keyboard
 
-> 以左手大键盘为例
+> Left-hand large keyboard shown as the example
 
-![左手大键盘外壳铜螺母安装示意图](/Docs/Image/左手大键盘外壳铜螺母安装示意图.jpg "左手大键盘外壳铜螺母安装示意图")
+![Large Keyboard Enclosure Heat-Set Insert Guide](/Docs/Image/左手大键盘外壳铜螺母安装示意图.jpg "Large Keyboard Enclosure Heat-Set Insert Guide")
 
-![左手大键盘底座铜螺母安装示意图](/Docs/Image/左手大键盘底座铜螺母安装示意图.jpg "左手大键盘底座铜螺母安装示意图")
+![Large Keyboard Base Heat-Set Insert Guide](/Docs/Image/左手大键盘底座铜螺母安装示意图.jpg "Large Keyboard Base Heat-Set Insert Guide")
 
-![左手大键盘底部螺丝安装示意图](/Docs/Image/左手大键盘底部螺丝安装示意图.jpg "左手大键盘底部螺丝安装示意图")
+![Large Keyboard Bottom Screw Installation Guide](/Docs/Image/左手大键盘底部螺丝安装示意图.jpg "Large Keyboard Bottom Screw Installation Guide")
 
-![左手大键盘棉条安装示意图](/Docs/Image/左手大键盘棉条安装示意图.jpg "左手大键盘棉条安装示意图")
+![Large Keyboard Foam Strip Installation Guide](/Docs/Image/左手大键盘棉条安装示意图.jpg "Large Keyboard Foam Strip Installation Guide")
 
-![大键盘鼠标键铜螺母安装示意图](/Docs/Image/大键盘鼠标键铜螺母安装示意图.jpg "大键盘鼠标键铜螺母安装示意图")
+![Large Keyboard Mouse Button Insert Guide](/Docs/Image/大键盘鼠标键铜螺母安装示意图.jpg "Large Keyboard Mouse Button Insert Guide")
 
-#### 小键盘
+#### Small Keyboard
 
-![左手小键盘外壳铜螺母安装示意图](/Docs/Image/左手小键盘外壳铜螺母安装示意图.jpg "左手小键盘外壳铜螺母安装示意图")
+![Small Keyboard Enclosure Heat-Set Insert Guide](/Docs/Image/左手小键盘外壳铜螺母安装示意图.jpg "Small Keyboard Enclosure Heat-Set Insert Guide")
 
-![左手小键盘底座铜螺母安装示意图](/Docs/Image/左手小键盘底座铜螺母安装示意图.jpg "左手小键盘底座铜螺母安装示意图")
+![Small Keyboard Base Heat-Set Insert Guide](/Docs/Image/左手小键盘底座铜螺母安装示意图.jpg "Small Keyboard Base Heat-Set Insert Guide")
 
-![左手小键盘底部螺丝安装示意图](/Docs/Image/左手小键盘底部螺丝安装示意图.jpg "左手小键盘底部螺丝安装示意图")
+![Small Keyboard Bottom Screw Installation Guide](/Docs/Image/左手小键盘底部螺丝安装示意图.jpg "Small Keyboard Bottom Screw Installation Guide")
 
-![小键盘鼠标键铜螺母安装示意图](/Docs/Image/小键盘鼠标键铜螺母安装示意图.jpg "小键盘鼠标键铜螺母安装示意图")
+![Small Keyboard Mouse Button Insert Guide](/Docs/Image/小键盘鼠标键铜螺母安装示意图.jpg "Small Keyboard Mouse Button Insert Guide")
 
-![小键盘键帽不同层区分](/Docs/Image/小键盘键帽不同层区分.jpg "小键盘键帽不同层区分")
+![Small Keyboard Keycap Layer Guide](/Docs/Image/小键盘键帽不同层区分.jpg "Small Keyboard Keycap Layer Guide")
 
-> 小键盘与大键盘键帽区分方式相同
+> Keycap layer distinction is the same for both the small and large keyboards.
 
-#### 其它
+#### Other
 
-![轨迹球安装示意图](/Docs/Image/轨迹球安装示意图.jpg "轨迹球安装示意图")
-
-
-
+![Trackball Installation Guide](/Docs/Image/轨迹球安装示意图.jpg "Trackball Installation Guide")
