@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One-Handed Keyboard — Open-Source</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --accent: #5b8dee;
+      --text: #e8eaf0;
+      --muted: #8b90a0;
+      --border: #2e3248;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 2rem;
+      height: 56px;
+    }
+
+    nav .brand {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    nav .brand span { color: var(--accent); }
+
+    nav a:not(.brand) {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color .2s;
+    }
+    nav a:not(.brand):hover { color: var(--text); }
+
+    nav .spacer { flex: 1; }
+
+    nav a.gh-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 5px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    nav a.gh-link:hover { background: var(--surface); }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 4rem;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,141,238,0.12) 0%, transparent 70%);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 40%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 640px;
+      margin: 0 auto 2rem;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 4rem 2rem; }
+    section:nth-child(even) { background: var(--surface); }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .section-title span { color: var(--accent); }
+
+    .section-sub {
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      font-size: 0.95rem;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* ── 3D VIEWER ── */
+    .viewer-wrapper {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .viewer-wrapper { grid-template-columns: 1fr; }
+    }
+
+    .viewer-sidebar {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .viewer-sidebar h3 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .model-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 10px 12px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.87rem;
+      transition: background .15s, border-color .15s;
+    }
+    .model-btn:hover { background: var(--surface); }
+    .model-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+    .model-btn small { display: block; font-size: 0.75rem; opacity: .7; margin-top: 2px; }
+
+    .divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+    .part-btn {
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--muted);
+      padding: 7px 10px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: background .15s, color .15s;
+    }
+    .part-btn:hover { background: var(--surface); color: var(--text); }
+    .part-btn.active { background: rgba(91,141,238,0.15); border-color: var(--accent); color: var(--accent); }
+
+    #viewer-canvas-wrap {
+      position: relative;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 16/10;
+    }
+
+    #viewer-canvas-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
+
+    #viewer-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(15,17,23,0.6);
+      transition: opacity .3s;
+    }
+    #viewer-overlay.hidden { opacity: 0; pointer-events: none; }
+
+    #viewer-overlay .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #viewer-overlay p { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 0 1rem; }
+
+    .viewer-hint {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── OVERVIEW ── */
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .doc-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    .doc-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .doc-card h3 .icon {
+      width: 28px; height: 28px;
+      background: rgba(91,141,238,0.15);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .doc-card p { color: var(--muted); font-size: 0.88rem; }
+
+    /* ── BUILD GUIDE ── */
+    .build-section { margin-bottom: 3rem; }
+    .build-section h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .build-section p, .build-section li {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .build-section ul, .build-section ol { padding-left: 1.4rem; }
+    .build-section strong { color: var(--text); }
+
+    .build-section .callout {
+      background: rgba(91,141,238,0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 0.8rem 1rem;
+      margin: 0.8rem 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .build-section .callout a { color: var(--accent); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin: 1rem 0;
+    }
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    th { background: var(--surface); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* ── GALLERY ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .gallery-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .gallery-item:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .gallery-item img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+    .gallery-item figcaption { padding: 8px 12px; font-size: 0.8rem; color: var(--muted); }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 100%; max-height: 90vh; border-radius: 8px; object-fit: contain; }
+    #lightbox-close {
+      position: absolute; top: 1rem; right: 1.5rem;
+      font-size: 2rem; color: #fff; cursor: pointer;
+      line-height: 1; background: none; border: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="brand" href="#"><span>⌨</span> One-Handed Keyboard</a>
+  <a href="#viewer">3D Viewer</a>
+  <a href="#overview">Overview</a>
+  <a href="#build">Build Guide</a>
+  <a href="#gallery">Gallery</a>
+  <div class="spacer"></div>
+  <a class="gh-link" href="https://github.com/dill-lk/One-Handed-Keyboard" target="_blank" rel="noopener">
+    <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+    </svg>
+    GitHub
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>One-Handed Keyboard</h1>
+  <p>An open-source mechanical keyboard with integrated trackball, designed for one-handed use. QMK-powered with three variants for left and right hands.</p>
+  <div class="pill-row">
+    <span class="pill">🖱 Integrated Trackball</span>
+    <span class="pill">⚙ QMK Firmware</span>
+    <span class="pill">🔩 3 Variants</span>
+    <span class="pill">📦 Open-Source Hardware</span>
+    <span class="pill">🖨 3D-Printable</span>
+  </div>
+</div>
+
+<!-- 3D VIEWER -->
+<section id="viewer">
+  <div class="container">
+    <div class="section-title">3D <span>Model Viewer</span></div>
+    <p class="section-sub">Rotate · Zoom · Inspect — interact with the keyboard models directly in your browser.</p>
+
+    <div class="viewer-wrapper">
+      <!-- Sidebar -->
+      <div class="viewer-sidebar">
+        <h3>Variant</h3>
+        <button class="model-btn active" data-variant="ML" onclick="selectVariant('ML',this)">
+          Left Large
+          <small>Hot-swap · 4-layer PCB</small>
+        </button>
+        <button class="model-btn" data-variant="MR" onclick="selectVariant('MR',this)">
+          Right Large
+          <small>Hot-swap · 4-layer PCB</small>
+        </button>
+        <button class="model-btn" data-variant="SL" onclick="selectVariant('SL',this)">
+          Left Small
+          <small>Solder · 2-layer PCB</small>
+        </button>
+
+        <div class="divider"></div>
+        <h3>Part</h3>
+        <div id="part-list"></div>
+      </div>
+
+      <!-- Canvas -->
+      <div>
+        <div id="viewer-canvas-wrap">
+          <canvas id="three-canvas"></canvas>
+          <div id="viewer-overlay">
+            <div class="spinner"></div>
+            <p id="overlay-msg">Loading model…</p>
+          </div>
+        </div>
+        <p class="viewer-hint">🖱 Left-drag to rotate &nbsp;·&nbsp; Scroll to zoom &nbsp;·&nbsp; Right-drag to pan</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="container">
+    <div class="section-title">Project <span>Overview</span></div>
+    <p class="section-sub">Everything included in this open-source release.</p>
+
+    <div class="doc-grid">
+      <div class="doc-card">
+        <h3><span class="icon">📐</span> Hardware</h3>
+        <p>8 PCB designs across three keyboard variants (left-hand and right-hand), provided as LCEDA / EasyEDA project files.</p>
+      </div>
+      <div class="doc-card">
+        <h3><span class="icon">💾</span> Firmware</h3>
+        <p>QMK firmware for all three variants, plus JSON keymap files for VIA remapping and pre-compiled binaries.</p>
+      </div>
+      <div class="doc-card">
+        <h3><span class="icon">🖨</span> 3D Models</h3>
+        <p>STL files for all printable parts and DXF files for CNC-cut components for each keyboard variant.</p>
+      </div>
+      <div class="doc-card">
+        <h3><span class="icon">🖱</span> Trackball</h3>
+        <p>25 mm PTFE trackball with 6 × 2 mm PTFE bearing balls. Sensor: ADNS-9800 over SPI1.</p>
+      </div>
+      <div class="doc-card">
+        <h3><span class="icon">🔌</span> MCU</h3>
+        <p>STM32G431CBU6 microcontroller. Compatible with USB-A→USB-C and USB-C→USB-C cables.</p>
+      </div>
+      <div class="doc-card">
+        <h3><span class="icon">🔩</span> Modularity</h3>
+        <p>Trackball, scroll wheel, and directional button daughterboards are shared across all variants and connected via FPC cables.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD GUIDE -->
+<section id="build">
+  <div class="container">
+    <div class="section-title">Build <span>Guide</span></div>
+    <p class="section-sub">Full assembly instructions for all three keyboard variants.</p>
+
+    <div class="build-section">
+      <h3>PCB Specifications</h3>
+      <ul>
+        <li><strong>Right-Hand Large (Hot-Swap):</strong> FR-4, 1.6 mm, 4-layer, stackup JLC04161H-3313, impedance ±20%.</li>
+        <li><strong>Left-Hand Small (Solder):</strong> FR-4, 1.6 mm, 2-layer. ALPS yellow switches need slight force when inserting.</li>
+        <li><strong>Left-Hand Large (Hot-Swap):</strong> FR-4, 1.6 mm, 4-layer, stackup JLC04161H-3313, impedance ±20%.</li>
+        <li><strong>Type-C Daughterboard (×2):</strong> FR-4, 1.6 mm, 2-layer. Connector CON1 (large keyboard only).</li>
+        <li><strong>Trackball Module:</strong> FR-4, 1.6 mm, 2-layer. Mind soldering orientation. Connector: CON3.</li>
+        <li><strong>Scroll Wheel Module:</strong> FR-4, 1.6 mm, 2-layer. Encoder 7 mm, button 6 mm, actuation ≤ 180 g. Connector: CON2.</li>
+        <li><strong>Directional Button Module:</strong> FR-4, 1.6 mm, 2-layer. ALPS yellow switches. Connector: CON4.</li>
+        <li><strong>Main Control Board – Left Small:</strong> FR-4, 1.6 mm, 2-layer.</li>
+      </ul>
+      <div class="callout">
+        Trackball, Scroll Wheel, and Directional Button boards are shared across all variants.
+        The left-hand and right-hand large keyboards are <strong>not</strong> mirror images of each other.
+      </div>
+    </div>
+
+    <div class="build-section">
+      <h3>Printed Parts</h3>
+      <ul>
+        <li><strong>Keycaps:</strong> Resin, PLA, or similar.</li>
+        <li><strong>Trackball Housing:</strong> Resin, PLA, or similar.</li>
+        <li><strong>Mouse Left/Right Buttons:</strong> Resin, PLA, or similar.</li>
+        <li><strong>Enclosure:</strong> Resin, PLA, or similar.</li>
+        <li><strong>Base:</strong> Resin, PLA, or similar.</li>
+      </ul>
+    </div>
+
+    <div class="build-section">
+      <h3>Machined Parts</h3>
+      <ul>
+        <li><strong>Switch Plate:</strong> POM recommended, 1.5 mm thick.</li>
+        <li><strong>Plate Foam Strip:</strong> Adhesive on one side.</li>
+        <li><strong>Sandwich Foam:</strong> Poron recommended, 3.5 mm thick.</li>
+        <li><strong>Switch Pad Foam:</strong> 2 mm thick.</li>
+        <li><strong>Base Foam:</strong> Poron recommended, 4 mm thick.</li>
+        <li><strong>Silicone Pad (small only):</strong> 5 mm thick, Shore 00-10.</li>
+      </ul>
+    </div>
+
+    <div class="build-section">
+      <h3>Fasteners</h3>
+      <table>
+        <thead>
+          <tr><th>Part</th><th>Large Keyboard</th><th>Small Keyboard</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>M3×3×4 Heat-Set Brass Insert</td><td>8</td><td>8</td></tr>
+          <tr><td>M2×2×3 Heat-Set Brass Insert</td><td>2</td><td>–</td></tr>
+          <tr><td>M2×3×3 Heat-Set Brass Insert</td><td>17</td><td>12</td></tr>
+          <tr><td>M3×6 Countersunk Screw</td><td>2</td><td>6</td></tr>
+          <tr><td>M3×15 Countersunk Screw</td><td>–</td><td>4</td></tr>
+          <tr><td>M3×22 Countersunk Screw</td><td>6</td><td>–</td></tr>
+          <tr><td>M2×8 Socket Head Screw</td><td>4</td><td>4</td></tr>
+          <tr><td>M2×3 Socket Head Screw</td><td>2</td><td>–</td></tr>
+          <tr><td>M2×5 Socket Head Screw</td><td>13</td><td>8</td></tr>
+          <tr><td>M3×16 Flat Head Screw</td><td>–</td><td>2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="build-section">
+      <h3>Other Components</h3>
+      <ul>
+        <li><strong>Trackball:</strong> 25 mm diameter, PTFE.</li>
+        <li><strong>Bearing Balls:</strong> 2 mm diameter, PTFE. 6 balls in trackball housing.</li>
+        <li><strong>Scroll Wheel:</strong> 19–20 mm diameter, 4–5 mm thick, metal.</li>
+        <li><strong>Stabilizers:</strong> 2U PCB-mount stabilizers.</li>
+        <li><strong>Switches:</strong> Small: 57 mini ALPS yellow; Large: 57 standard mechanical switches.</li>
+        <li><strong>FPC Cables:</strong> 0.5 mm pitch, 8-pin, reversed polarity — two 10 cm + two 15 cm.</li>
+      </ul>
+      <div class="callout">
+        All FPC connectors are labeled CON1–CON4. Connect matching labels together.
+        The design uses dual-direction FPC connectors; with all oriented bottom-contact, use reversed-polarity cables.
+      </div>
+    </div>
+
+    <div class="build-section">
+      <h3>Firmware Flashing</h3>
+      <ul>
+        <li><strong>First flash:</strong> Hold button "B" on PCB back, plug in USB → bootloader mode.</li>
+        <li><strong>Updates:</strong> Hold ESC on the keyboard, plug in USB → bootloader mode.</li>
+      </ul>
+      <div class="callout">
+        See the <a href="https://docs.qmk.fm/newbs_flashing" target="_blank" rel="noopener">QMK flashing guide</a> for full details.
+      </div>
+    </div>
+
+    <div class="build-section">
+      <h3>Assembly Steps (Large Keyboard)</h3>
+      <ol>
+        <li>Connect 4 daughterboards to main PCB via FPC cables; flash firmware and test all functions first.</li>
+        <li>Install 3–5 switches plus scroll wheel and trackball to verify before full assembly.</li>
+        <li>Install heat-set brass inserts into the enclosure and base at the correct positions.</li>
+        <li>Print legends on keycaps. Attach foam strips to both sides of protruding switch plate sections.</li>
+        <li>Secure 4 daughterboards to base with screws (mind cable routing). Attach trackball housing screws from below.</li>
+        <li>Fasten left and right mouse buttons to main PCB.</li>
+        <li>Layer into fan-shaped base cavity: base foam → switch pad foam → keyboard PCB → sandwich foam → switch plate.</li>
+        <li>Insert all key switches.</li>
+        <li>Place enclosure over assembly and secure from below with screws.</li>
+        <li>Install keycaps to complete the build.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-title">Photo <span>Gallery</span></div>
+    <p class="section-sub">Assembly diagrams and finished keyboard photos.</p>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <a href="https://github.com/dill-lk/One-Handed-Keyboard" target="_blank" rel="noopener">One-Handed Keyboard</a>
+    &nbsp;·&nbsp; Open-source hardware
+    &nbsp;·&nbsp; Firmware: <a href="https://docs.qmk.fm/" target="_blank" rel="noopener">QMK</a>
+    &nbsp;·&nbsp; Sensor: <a href="https://github.com/mrjohnk/ADNS-9800/" target="_blank" rel="noopener">ADNS-9800</a>
+  </p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <button id="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<!-- THREE.JS via importmap -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+/* ── Model catalogue ─────────────────────────────────────────────────────── */
+const VARIANTS = {
+  ML: {
+    path: '../Model/One-Handed_Keyboard_ML/',
+    parts: [
+      { name: 'Enclosure',         file: '外壳_左.STL' },
+      { name: 'Base',              file: '底座_左.STL' },
+      { name: 'Keycaps',           file: '键帽_左.STL' },
+      { name: 'Mouse Buttons',     file: '左右键.STL'  },
+      { name: 'Trackball Housing', file: '轨迹球座.STL' },
+      { name: 'D-Pad Keycap',      file: '方向键键帽.STL' },
+    ]
+  },
+  MR: {
+    path: '../Model/One-Handed_Keyboard_MR/',
+    parts: [
+      { name: 'Enclosure',         file: '外壳_右.STL' },
+      { name: 'Base',              file: '底座_右.STL' },
+      { name: 'Keycaps',           file: '键帽_右.STL' },
+      { name: 'Mouse Buttons',     file: '左右键.STL'  },
+      { name: 'Trackball Housing', file: '轨迹球座.STL' },
+      { name: 'D-Pad Keycap',      file: '方向键键帽.STL' },
+    ]
+  },
+  SL: {
+    path: '../Model/One-Handed_Keyboard_SL/',
+    parts: [
+      { name: 'Enclosure',         file: '外壳.STL'    },
+      { name: 'Base',              file: '底座.STL'    },
+      { name: 'Keycaps',           file: '键帽.STL'    },
+      { name: 'Mouse Buttons',     file: '左右键.STL'  },
+      { name: 'Trackball Housing', file: '轨迹球座.STL' },
+      { name: 'D-Pad Keycap',      file: '方向键键帽.STL' },
+    ]
+  }
+};
+
+/* ── Three.js scene ──────────────────────────────────────────────────────── */
+const wrap       = document.getElementById('viewer-canvas-wrap');
+const canvas     = document.getElementById('three-canvas');
+const overlay    = document.getElementById('viewer-overlay');
+const overlayMsg = document.getElementById('overlay-msg');
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1d27);
+scene.fog = new THREE.Fog(0x1a1d27, 400, 900);
+
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
+camera.position.set(0, 80, 200);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 10;
+controls.maxDistance = 600;
+
+/* Lights */
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const dir = new THREE.DirectionalLight(0xffffff, 1.4);
+dir.position.set(80, 160, 120);
+dir.castShadow = true;
+scene.add(dir);
+const fill = new THREE.DirectionalLight(0x8ab4f8, 0.5);
+fill.position.set(-80, 40, -60);
+scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffffff, 0.3);
+rim.position.set(0, -40, -100);
+scene.add(rim);
+
+/* Grid */
+const grid = new THREE.GridHelper(400, 40, 0x2e3248, 0x2e3248);
+scene.add(grid);
+
+/* Resize */
+function resize() {
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(wrap);
+resize();
+
+/* Render loop */
+(function loop() { requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); })();
+
+/* ── Model loading ───────────────────────────────────────────────────────── */
+let mesh = null;
+const loader = new STLLoader();
+
+function clearMesh() {
+  if (!mesh) return;
+  scene.remove(mesh);
+  mesh.geometry.dispose();
+  mesh.material.dispose();
+  mesh = null;
+}
+
+function loadPart(variantKey, partIdx) {
+  const v   = VARIANTS[variantKey];
+  const p   = v.parts[partIdx];
+  const url = v.path + p.file;
+
+  clearMesh();
+  overlay.classList.remove('hidden');
+  overlayMsg.textContent = `Loading ${p.name}…`;
+
+  loader.load(url,
+    (geo) => {
+      geo.computeVertexNormals();
+      geo.center();
+
+      const box  = new THREE.Box3().setFromBufferAttribute(geo.attributes.position);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      const scale = 120 / Math.max(size.x, size.y, size.z);
+
+      const mat = new THREE.MeshStandardMaterial({ color: 0x5b8dee, metalness: 0.15, roughness: 0.55 });
+      mesh = new THREE.Mesh(geo, mat);
+      mesh.scale.setScalar(scale);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      scene.add(mesh);
+
+      const d = Math.max(size.x, size.y, size.z) * scale * 1.8;
+      camera.position.set(d * 0.6, d * 0.5, d);
+      controls.target.set(0, 0, 0);
+      controls.update();
+      grid.position.y = -(size.y * scale) / 2 - 1;
+
+      overlay.classList.add('hidden');
+    },
+    (xhr) => {
+      if (xhr.total) overlayMsg.textContent = `Loading ${p.name}… ${Math.round(xhr.loaded / xhr.total * 100)}%`;
+    },
+    () => {
+      overlayMsg.textContent = `Could not load "${p.file}". Serve the site from the repository root or use a local server.`;
+    }
+  );
+}
+
+/* ── UI ──────────────────────────────────────────────────────────────────── */
+let currentVariant = 'ML';
+let currentPart    = 0;
+
+function renderPartList(variantKey) {
+  const list = document.getElementById('part-list');
+  list.innerHTML = '';
+  VARIANTS[variantKey].parts.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'part-btn' + (i === currentPart ? ' active' : '');
+    btn.textContent = p.name;
+    btn.onclick = () => {
+      currentPart = i;
+      list.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadPart(currentVariant, i);
+    };
+    list.appendChild(btn);
+  });
+}
+
+window.selectVariant = function(key, btn) {
+  currentVariant = key;
+  currentPart    = 0;
+  document.querySelectorAll('.model-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPartList(key);
+  loadPart(key, 0);
+};
+
+/* Boot */
+renderPartList('ML');
+loadPart('ML', 0);
+</script>
+
+<!-- Gallery + Lightbox -->
+<script>
+const IMAGES = [
+  { src: '../Docs/Image/左手小键盘正面.jpg',                caption: 'Left Small — Front' },
+  { src: '../Docs/Image/左手小键盘右侧面.jpg',               caption: 'Left Small — Right Side' },
+  { src: '../Docs/Image/左手小键盘左侧面.jpg',               caption: 'Left Small — Left Side' },
+  { src: '../Docs/Image/左手大键盘正面.jpg',                 caption: 'Left Large — Front' },
+  { src: '../Docs/Image/左手大键盘右侧.jpg',                 caption: 'Left Large — Right Side' },
+  { src: '../Docs/Image/左手大键盘左侧.jpg',                 caption: 'Left Large — Left Side' },
+  { src: '../Docs/Image/右手大键盘正面.jpg',                 caption: 'Right Large — Front' },
+  { src: '../Docs/Image/右手大键盘右侧.jpg',                 caption: 'Right Large — Right Side' },
+  { src: '../Docs/Image/右手大键盘左侧.jpg',                 caption: 'Right Large — Left Side' },
+  { src: '../Docs/Image/左手大键盘爆炸图.jpg',               caption: 'Left Large — Exploded View' },
+  { src: '../Docs/Image/左手小键盘爆炸图.jpg',               caption: 'Left Small — Exploded View' },
+  { src: '../Docs/Image/轨迹球安装示意图.jpg',               caption: 'Trackball Installation' },
+  { src: '../Docs/Image/左手大键盘棉条安装示意图.jpg',        caption: 'Large — Foam Strip Install' },
+  { src: '../Docs/Image/左手大键盘底部螺丝安装示意图.jpg',    caption: 'Large — Bottom Screw Install' },
+  { src: '../Docs/Image/左手小键盘底部螺丝安装示意图.jpg',    caption: 'Small — Bottom Screw Install' },
+  { src: '../Docs/Image/小键盘键帽不同层区分.jpg',            caption: 'Small — Keycap Layer Guide' },
+];
+
+const galleryGrid = document.getElementById('gallery-grid');
+IMAGES.forEach(({ src, caption }) => {
+  const fig = document.createElement('figure');
+  fig.className = 'gallery-item';
+  fig.innerHTML = `<img src="${src}" alt="${caption}" loading="lazy"><figcaption>${caption}</figcaption>`;
+  fig.addEventListener('click', () => openLightbox(src, caption));
+  galleryGrid.appendChild(fig);
+});
+
+function openLightbox(src, alt) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-img').alt = alt;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeLightbox();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
