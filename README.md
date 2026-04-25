@@ -1,177 +1,163 @@
 # **One-Handed Keyboard**
 
-> 我们收到了一封特殊的邮件。来信者的女儿在上学途中不幸遭到重型卡车碾压，右手永久失去了功能，用电脑的时候手得在键盘和鼠标之间频繁切换，打字很慢，很累。他想让我们帮他女儿做一个单手键盘。
+> We received a very special message. The sender's daughter was struck by a heavy truck on her way to school, permanently losing the function of her right hand. Using a computer became exhausting, as she had to constantly switch between the keyboard and mouse while typing slowly and with great effort. He reached out asking if we could help build a one-handed keyboard for his daughter.
 
-![左手小键盘](/Docs/Image/左手小键盘右侧面.jpg "左手小键盘")
+![Left Hand Small Keyboard](/Docs/Image/左手小键盘右侧面.jpg "Left Hand Small Keyboard")
 
-![左手大键盘](/Docs/Image/左手大键盘右侧.jpg "左手大键盘")
+![Left Hand Large Keyboard](/Docs/Image/左手大键盘右侧.jpg "Left Hand Large Keyboard")
 
-这是一把单模且集成了轨迹球的机械键盘，固件使用[QMK](https://github.com/qmk/qmk_firmware)，感谢所有为 QMK 社区做出贡献的开发者。
+This is a single-mode mechanical keyboard with an integrated trackball. The firmware is built on [QMK](https://github.com/qmk/qmk_firmware). We sincerely thank all developers who have contributed to the QMK community.
 
-键盘制作参考：[【何同学】我们做了个特别的键盘…](https://www.bilibili.com/video/BV1DtjAzUEb9)
+Keyboard design reference: [【He Tongxue】We built a special keyboard…](https://www.bilibili.com/video/BV1DtjAzUEb9)
 
-硬件开源：[HTXStudio单手键盘](https://oshwhub.com/htx-studio/One-Handed_Keyboard)
+Open-source hardware: [HTXStudio One-Handed Keyboard](https://oshwhub.com/htx-studio/One-Handed_Keyboard)
 
-[GitHub repository](https://github.com/htx-studio/One-Handed-Keyboard)
+[GitHub Repository](https://github.com/htx-studio/One-Handed-Keyboard)
 
-[Gitee repository](https://gitee.com/htxstudio/one-handed-keyboard)
+[Gitee Repository](https://gitee.com/htxstudio/one-handed-keyboard)
 
-开发环境与搭建参考[这里](https://docs.qmk.fm/newbs_getting_started "设置您的QMK环境")，固件源码在[这里](https://github.com/htx-studio/qmk_firmware/tree/master/keyboards/htx_studio)。
+For setting up the development environment, refer to [the QMK getting started guide](https://docs.qmk.fm/newbs_getting_started "Set up your QMK environment"). The firmware source code is available [here](https://github.com/htx-studio/qmk_firmware/tree/master/keyboards/htx_studio).
 
-本仓库的资料内容包括：
+This repository includes:
 
-* 左右手一共三款键盘的8块PCB，提供立创EDA工程。
-* VIA改键配置文件，以及编译完成的固件。
-* 模型设计文件。
-
----
-
-## 仓库目录结构
-
-#### Docs（文档）
-
-芯片的数据手册与图片。
-
-#### Firmware（固件）
-
-三款不同型号键盘的QMK固件，以及用于VIA改键的JSON文件。
-
-#### Hardware（硬件）
-
-嘉立创EDA的项目文件。
-
-#### Model（模型）
-
-每个型号键盘使用到的模型文件，加工文件。
+* 8 PCB designs for a total of three keyboard variants (left-hand and right-hand), provided as LCEDA/EasyEDA projects.
+* VIA keymap configuration files and pre-compiled firmware binaries.
+* 3D model design files.
 
 ---
 
-## 制作指南
+## Repository Structure
 
-### PCB：
+#### Docs
 
-1-右手键盘-热插拔(大)：板材FR-4，板厚1.6mm，四层板，层压结构JLC04161H-3313，阻抗管控+/-20%。
+Chip datasheets and reference images.
 
-1-左手键盘-焊板(小)：板材FR-4，板厚1.6mm，双层板，ALPS黄轴插入时需稍用力安装到位。
+#### Firmware
 
-1-左手键盘-热插拔(大)：板材FR-4，板厚1.6mm，四层板，层压结构JLC04161H-3313，阻抗管控+/-20%。
+QMK firmware for the three keyboard variants, along with JSON files for VIA key remapping.
 
-2-TypeC：板材FR-4，板厚1.6mm，双层板，标识CON1（仅适用于大键盘）。
+#### Hardware
 
-3-轨迹球：板材FR-4，板厚1.6mm，双层板，模块需注意焊接方向，标识CON3。
+Project files for JLCEDA (EasyEDA).
 
-4-鼠标滚轮：板材FR-4，板厚1.6mm，双层板，建议使用7mm高编码器，6mm高按键，按键触发压力≤180g，标识CON2。
+#### Model
 
-5-方向按键：板材FR-4，板厚1.6mm，双层板，ALPS黄轴插入时需稍用力安装到位，标识CON4。
+3D model files and manufacturing files for each keyboard variant.
 
-6-主控板-左手(小)：板材FR-4，板厚1.6mm，双层板。
+---
 
-> * 其中3款为键盘控制公用小板 `《3-轨迹球》《4-鼠标滚轮》《5-方向按键》`。
-> * `《5-方向按键》`和 `《1-左手键盘-焊板(小)》`，按键轴使用ALPS黄轴。
-> * 注意左右手大键盘并非完全镜像。
-> * 轨迹球控制使用SPI1通道，滚轮有单独两条信号线，这可以使得替换其它控制设备而不需要较大的调整。
-> * 主控使用 STM32G431CBU6。
-> * 兼容A to C 或 C to C 数据线。
+## Build Guide
 
-### 打印件：
+### PCB
 
-键帽：树脂、PLA等。
+**1 – Right-Hand Keyboard – Hot-Swap (Large):** FR-4 material, 1.6 mm thickness, 4-layer board, stackup JLC04161H-3313, impedance control ±20%.
 
-轨迹球座：树脂、PLA等。
+**1 – Left-Hand Keyboard – Solder (Small):** FR-4 material, 1.6 mm thickness, 2-layer board. ALPS yellow switches require slight force when inserting.
 
-鼠标左右键：树脂、PLA等。
+**1 – Left-Hand Keyboard – Hot-Swap (Large):** FR-4 material, 1.6 mm thickness, 4-layer board, stackup JLC04161H-3313, impedance control ±20%.
 
-外壳：树脂、PLA等。
+**2 – Type-C Daughterboard:** FR-4 material, 1.6 mm thickness, 2-layer board. Connector labeled CON1 (large keyboard only).
 
-底座：树脂、PLA等。
+**3 – Trackball Module:** FR-4 material, 1.6 mm thickness, 2-layer board. Pay attention to the soldering orientation. Connector labeled CON3.
 
-### 加工：
+**4 – Scroll Wheel Module:** FR-4 material, 1.6 mm thickness, 2-layer board. Recommended encoder height: 7 mm; button height: 6 mm; button actuation force ≤ 180 g. Connector labeled CON2.
 
-定位板：推荐材料pom，厚1.5mm。
+**5 – Directional Button Module:** FR-4 material, 1.6 mm thickness, 2-layer board. ALPS yellow switches require slight force when inserting. Connector labeled CON4.
 
-定位板棉条：单面留胶。
+**6 – Main Control Board – Left-Hand (Small):** FR-4 material, 1.6 mm thickness, 2-layer board.
 
-夹心棉：推荐材料poron，厚3.5mm。
+> * Three of the boards are shared control daughterboards used by all keyboard variants: `Trackball`, `Scroll Wheel`, and `Directional Buttons`.
+> * The `Directional Buttons` board and the `Left-Hand Keyboard – Solder (Small)` board both use ALPS yellow switches.
+> * Note that the large left-hand and right-hand keyboards are **not** perfect mirror images of each other.
+> * Trackball control uses the SPI1 channel. The scroll wheel uses two dedicated signal lines, making it straightforward to replace with an alternative input device without significant redesign.
+> * The main microcontroller is the **STM32G431CBU6**.
+> * Compatible with both USB-A to USB-C and USB-C to USB-C cables.
 
-轴座棉：厚2mm。
+### Printed Parts
 
-底棉：推荐材料poron，厚4mm。
+- **Keycaps:** Resin, PLA, or similar materials.
+- **Trackball Housing:** Resin, PLA, or similar materials.
+- **Mouse Left/Right Buttons:** Resin, PLA, or similar materials.
+- **Enclosure:** Resin, PLA, or similar materials.
+- **Base:** Resin, PLA, or similar materials.
 
-硅胶垫（仅小键盘使用）：厚5mm，硬度Shore 00-10。
+### Machined Parts
 
-### 五金：
+- **Switch Plate:** Recommended material: POM, 1.5 mm thick.
+- **Plate Foam Strip:** Adhesive on one side.
+- **Sandwich Foam:** Recommended material: Poron, 3.5 mm thick.
+- **Switch Pad Foam:** 2 mm thick.
+- **Base Foam:** Recommended material: Poron, 4 mm thick.
+- **Silicone Pad (small keyboard only):** 5 mm thick, Shore hardness 00-10.
 
-|                    | 大键盘用量（颗） | 小键盘用量（颗） |
-| :----------------- | :--------------: | :--------------: |
-| M3×3×4热熔铜螺母 |        8        |        8        |
-| M2×2×3热熔铜螺母 |        2        |        -        |
-| M2×3×3热熔铜螺母 |        17        |        12        |
-| M3×6沉头螺丝      |        2        |        6        |
-| M3×15沉头螺丝     |        -        |        4        |
-| M3×22沉头螺丝     |        6        |        -        |
-| M2×8杯头螺丝      |        4        |        4        |
-| M2×3杯头螺丝      |        2        |        -        |
-| M2×5杯头螺丝      |        13        |        8        |
-| M3×16扁头螺丝     |        -        |        2        |
+### Hardware (Fasteners)
 
-### 其它：
+|                              | Large Keyboard (qty) | Small Keyboard (qty) |
+| :--------------------------- | :------------------: | :------------------: |
+| M3×3×4 Heat-Set Brass Insert |          8           |          8           |
+| M2×2×3 Heat-Set Brass Insert |          2           |          –           |
+| M2×3×3 Heat-Set Brass Insert |          17          |          12          |
+| M3×6 Countersunk Screw       |          2           |          6           |
+| M3×15 Countersunk Screw      |          –           |          4           |
+| M3×22 Countersunk Screw      |          6           |          –           |
+| M2×8 Socket Head Screw       |          4           |          4           |
+| M2×3 Socket Head Screw       |          2           |          –           |
+| M2×5 Socket Head Screw       |          13          |          8           |
+| M3×16 Flat Head Screw        |          –           |          2           |
 
-轨迹球：直径25mm，材质PTFE。
+### Other Components
 
-润滑球：直径2mm，材质PTFE，安装于打印件轨迹球座中，数量6颗。
+- **Trackball:** 25 mm diameter, PTFE material.
+- **Bearing Balls:** 2 mm diameter, PTFE material. Installed inside the printed trackball housing; 6 balls required.
+- **Scroll Wheel:** Recommended diameter 19–20 mm, thickness 4–5 mm, metal material.
+- **Stabilizers:** 2U PCB-mount stabilizers.
+- **Switches:** Small keyboard: 57 mini ALPS yellow switches; Large keyboard: 57 standard mechanical switches.
+- **FPC Cables:** 0.5 mm pitch, 8-pin, reversed polarity — two 10 cm cables and two 15 cm cables.
 
-滚轮：推荐直径19mm-20mm之间，厚4mm-5mm之间，材质金属。
+> * All FPC connectors on the main control board and the daughterboards are labeled with CON identifiers. Connect matching CON labels together.
+> * The design uses dual-direction (top/bottom contact) FPC connectors. When all connectors are oriented with bottom contact, use reversed-polarity FPC cables to connect them.
 
-卫星轴：2U钢板卫星轴。
+### Model Structure
 
-按键轴：小键盘57颗超小ALPS黄轴，大键盘57颗常见机械轴。
+![Left Hand Small Keyboard Exploded View](/Docs/Image/左手小键盘爆炸图.jpg "Left Hand Small Keyboard Exploded View")
 
-排线：间距0.5mm，8P反向，10cm2条，15cm2条。
+![Left Hand Large Keyboard Exploded View](/Docs/Image/左手大键盘爆炸图.jpg "Left Hand Large Keyboard Exploded View")
 
-> * 控制板和小板的FPC座均有CON标识，对应接口相接。
-> * 文件内使用可上下接FPC排线座，需要注意排线座均下接的情况下，使用反向排线连接。
+### Assembly Order
 
-### 模型结构：
+> The following steps use the large keyboard as an example.
 
-![左手小键盘爆炸](/Docs/Image/左手小键盘爆炸图.jpg "左手小键盘爆炸图")
+**Pre-Assembly Preparation**
 
-![左手大键盘爆炸](/Docs/Image/左手大键盘爆炸图.jpg "左手大键盘爆炸图")
+* Connect the 4 daughterboards to the main keyboard PCB using FPC cables, then flash the firmware.
+* Install 3–5 switches along with the scroll wheel and trackball, and verify that all functions are working correctly before proceeding with full assembly.
+* Insert the correct heat-set brass inserts into the appropriate locations on the printed enclosure and base.
+* Print legends on the keycaps.
+* Attach foam strips to both sides of the protruding sections of the switch plate.
 
-### 安装顺序：
-
-> 以大键盘为例
-
-**装配前的前置工作**
-
-* 先将4块小PCB使用排线连接至键盘本体PCB，烧录程序。
-* 安装3-5个轴体，滚轮和轨迹球。装配前确保功能是正常的。
-* 在打印的外壳与底座对应位置，安装正确的热熔铜螺母。
-* 键帽印字。
-* 将棉条贴在定位板突出部分（正反面都有）。
-
-> 第一次烧录固件时，可以按住PCB背面标有 "B" 的按钮，再插入USB线进行固件烧录。
+> **First-time firmware flashing:** Hold the button marked "B" on the back of the PCB, then connect the USB cable to enter bootloader mode.
 >
-> 若更新固件可以按住键盘上的 "ESC" 键，再插入USB线进行固件烧录。
+> **Firmware updates:** Hold the "ESC" key on the keyboard, then connect the USB cable to enter bootloader mode.
 >
-> 更多可以参考 [Flashing Your Keyboard (QMK)](https://docs.qmk.fm/newbs_flashing)
+> For more information, refer to [Flashing Your Keyboard (QMK)](https://docs.qmk.fm/newbs_flashing).
 
-**接下来开始装配**
+**Assembly Steps**
 
-1. 将4块小板使用螺丝安装到底座对应位置（注意排线和安装方向），轨迹球座在下方安装螺丝。
-2. 将左右键使用螺丝固定在键盘PCB上。
-3. 从下到上以底棉、轴座棉、键盘PCB、夹心棉、定位板顺序放入底座扇形区域。
-4. 插入按键轴体。
-5. 放入外壳，在下方使用螺丝固定。
-6. 安装键帽，完成装配。
+1. Secure the 4 daughterboards to their corresponding positions on the base using screws (pay attention to cable routing and orientation). Attach the trackball housing screws from below.
+2. Fasten the left and right mouse buttons to the main keyboard PCB using screws.
+3. Layer the components into the fan-shaped cavity of the base from bottom to top in the following order: base foam → switch pad foam → keyboard PCB → sandwich foam → switch plate.
+4. Insert the key switches.
+5. Place the enclosure over the assembly and secure it with screws from below.
+6. Install the keycaps to complete the build.
 
-> 螺丝螺母安装指南可以参考[这里](https://github.com/htx-studio/One-Handed-Keyboard/tree/main/Model)
+> For screw and insert installation guidance, refer to the notes in the [Model directory](https://github.com/htx-studio/One-Handed-Keyboard/tree/main/Model).
 
-最后，这是我们第一次开源项目，如果有什么不足欢迎大家批评指正，感谢大家。
+This is our first open-source project. We welcome any feedback, suggestions, or corrections. Thank you for your interest and support.
 
 ---
 
-## 引用
+## References
 
 [Quantum Mechanical Keyboard Firmware](https://docs.qmk.fm/)
 
-mrjohnk. ADNS-9800. [GitHub repository](https://github.com/mrjohnk/ADNS-9800/)
+mrjohnk. ADNS-9800. [GitHub Repository](https://github.com/mrjohnk/ADNS-9800/)
