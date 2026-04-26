@@ -10,11 +10,6 @@ This is a single-mode mechanical keyboard with an integrated trackball. The firm
 
 Keyboard design reference: [【He Tongxue】We built a special keyboard…](https://www.bilibili.com/video/BV1DtjAzUEb9)
 
-Open-source hardware: [HTXStudio One-Handed Keyboard](https://oshwhub.com/htx-studio/One-Handed_Keyboard)
-
-[GitHub Repository](https://github.com/htx-studio/One-Handed-Keyboard)
-
-[Gitee Repository](https://gitee.com/htxstudio/one-handed-keyboard)
 
 For setting up the development environment, refer to [the QMK getting started guide](https://docs.qmk.fm/newbs_getting_started "Set up your QMK environment"). The firmware source code is available [here](https://github.com/htx-studio/qmk_firmware/tree/master/keyboards/htx_studio).
 
